@@ -26,11 +26,10 @@ public class ProductService {
     }
 
     public Product createProduct(Product product) {
-        try {
-            return this.productRepository.save(product);
-        } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("Product already exists.");
+        if(this.productRepository.existsBySku(product.getSku())){
+            throw new RuntimeException("Sku already exists.");
         }
+        return this.productRepository.save(product);
     }
 
     public Product updateProduct(Product product) {
