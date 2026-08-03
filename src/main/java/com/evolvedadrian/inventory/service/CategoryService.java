@@ -25,11 +25,10 @@ public class CategoryService {
     }
 
     public Category createCategory(Category category) {
-        try {
-            return this.categoryRepository.save(category);
-        } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("Category already exists.");
+        if(this.categoryRepository.existsByName(category.getName())) {
+            throw new RuntimeException("Name already exists.");
         }
+        return this.categoryRepository.save(category);
     }
 
     public Category updateCategory(Category category) {
