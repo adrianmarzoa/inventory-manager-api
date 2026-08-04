@@ -1,5 +1,7 @@
 package com.evolvedadrian.inventory.controller;
 
+import com.evolvedadrian.inventory.dto.request.SupplierRequestDTO;
+import com.evolvedadrian.inventory.dto.response.SupplierResponseDTO;
 import com.evolvedadrian.inventory.entity.Supplier;
 import com.evolvedadrian.inventory.service.SupplierService;
 import org.springframework.web.bind.annotation.*;
@@ -14,23 +16,23 @@ public class SupplierController {
     }
 
     @GetMapping
-    public List<Supplier> getAllSuppliers() {
+    public List<SupplierResponseDTO> getAllSuppliers() {
         return this.supplierService.getAllSuppliers();
     }
 
     @GetMapping("/{id}")
-    public Supplier getSupplierById(@PathVariable Integer id) {
+    public SupplierResponseDTO getSupplierById(@PathVariable Integer id) {
         return this.supplierService.getSupplierById(id);
     }
 
     @GetMapping("/name/{name}")
-    public List<Supplier> findSupplierByName(@PathVariable String name) {
+    public List<SupplierResponseDTO> findSupplierByName(@PathVariable String name) {
         return this.supplierService.findSupplierByName(name);
     }
 
     @PostMapping
-    public Supplier createSupplier(@RequestBody Supplier supplier) {
-        return this.supplierService.createSupplier(supplier);
+    public SupplierResponseDTO createSupplier(@RequestBody SupplierRequestDTO dto) {
+        return this.supplierService.createSupplier(dto);
     }
 
     @DeleteMapping("/{id}")
@@ -39,8 +41,7 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public Supplier updateSupplier(@PathVariable Integer id, @RequestBody Supplier supplier) {
-        supplier.setId(id);
-        return this.supplierService.updateSupplier(supplier);
+    public SupplierResponseDTO updateSupplier(@PathVariable Integer id, @RequestBody SupplierRequestDTO dto) {
+        return this.supplierService.updateSupplier(id, dto);
     }
 }

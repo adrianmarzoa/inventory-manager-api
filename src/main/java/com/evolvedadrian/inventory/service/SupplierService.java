@@ -1,6 +1,9 @@
 package com.evolvedadrian.inventory.service;
 
+import com.evolvedadrian.inventory.dto.request.SupplierRequestDTO;
+import com.evolvedadrian.inventory.dto.response.SupplierResponseDTO;
 import com.evolvedadrian.inventory.entity.Supplier;
+import com.evolvedadrian.inventory.mapper.SupplierMapper;
 import com.evolvedadrian.inventory.repository.SupplierRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,36 +12,55 @@ import java.util.List;
 @Service
 public class SupplierService {
     private final SupplierRepository supplierRepository;
+    private final SupplierMapper supplierMapper;
 
-    public SupplierService(SupplierRepository supplierRepository) {
+    public SupplierService(SupplierRepository supplierRepository, SupplierMapper supplierMapper) {
         this.supplierRepository = supplierRepository;
+        this.supplierMapper = supplierMapper;
     }
 
-    public List<Supplier> getAllSuppliers() {
-        return this.supplierRepository.findAll();
+    public List<SupplierResponseDTO> getAllSuppliers() {
+        return this.supplierRepository.findAll().stream().map(this.supplierMapper::toResponse).toList();
     }
 
-    public Supplier getSupplierById(Integer id) {
-        return this.supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found."));
+    public SupplierResponseDTO getSupplierById(Integer id) {
+        Supplier supplier = this.supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found."));
+        return this.supplierMapper.toResponse(supplier);
     }
 
-    public Supplier createSupplier(Supplier supplier) {
-        return this.supplierRepository.save(supplier);
+    public SupplierResponseDTO createSupplier(SupplierRequestDTO dto) {
+        if(this.supplierRepository.existsByEmail(dto.getEmail())){
+            throw new RuntimeException("Email already exists.");
+        }
+
+        Supplier supplier = this.supplierMapper.toEntity(dto);
+
+        Supplier created = this.supplierRepository.save(supplier);
+
+        return this.supplierMapper.toResponse(created);
     }
 
-    public Supplier updateSupplier(Supplier supplier) {
-        if (!this.supplierRepository.existsById(supplier.getId())) {
+    public SupplierResponseDTO updateSupplier(Integer id, SupplierRequestDTO dto) {
+        if (!this.supplierRepository.existsById(id)) {
             throw new RuntimeException("Supplier does not exist.");
         }
-        return this.supplierRepository.save(supplier);
+
+        Supplier supplier = this.supplierMapper.toEntity(dto);
+
+        supplier.setId(id);
+
+        Supplier updated = this.supplierRepository.save(supplier);
+
+        return this.supplierMapper.toResponse(updated);
     }
 
     public void deleteSupplier(Integer id) {
-        Supplier supplier = getSupplierById(id);
-        this.supplierRepository.delete(supplier);
+        this.supplierRepository.deleteById(id);
     }
 
-    public List<Supplier> findSupplierByName(String name) {
-        return this.supplierRepository.findByName(name);
+    public List<SupplierResponseDTO> findSupplierByName(String name) {
+        List<Supplier> suppliers = this.supplierRepository.findByName(name);
+
+        return suppliers.stream().map(this.supplierMapper::toResponse).toList();
     }
 }
