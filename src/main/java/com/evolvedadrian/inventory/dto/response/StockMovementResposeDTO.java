@@ -15,7 +15,11 @@ public class StockMovementResposeDTO {
 
     private Integer productId;
 
+    private String productName;
+
     private Integer warehouseId;
+
+    private String warehouseName;
 
     public MovementType getType() {
         return this.type;
@@ -57,11 +61,27 @@ public class StockMovementResposeDTO {
         this.productId = productId;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public Integer getWarehouseId() {
         return warehouseId;
     }
 
     public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 }
