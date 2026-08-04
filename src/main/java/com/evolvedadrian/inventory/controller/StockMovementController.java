@@ -1,6 +1,7 @@
 package com.evolvedadrian.inventory.controller;
 
-import com.evolvedadrian.inventory.entity.StockMovement;
+import com.evolvedadrian.inventory.dto.request.StockMovementRequestDTO;
+import com.evolvedadrian.inventory.dto.response.StockMovementResposeDTO;
 import com.evolvedadrian.inventory.enums.MovementType;
 import com.evolvedadrian.inventory.service.StockMovementService;
 import org.springframework.web.bind.annotation.*;
@@ -18,32 +19,32 @@ public class StockMovementController {
     }
 
     @GetMapping
-    public List<StockMovement> getAllStockMovements() {
+    public List<StockMovementResposeDTO> getAllStockMovements() {
         return this.stockMovementService.getAllStockMovements();
     }
 
     @GetMapping("/{id}")
-    public StockMovement getStockMovementById(@PathVariable Integer id) {
+    public StockMovementResposeDTO getStockMovementById(@PathVariable Integer id) {
         return this.stockMovementService.getStockMovementById(id);
     }
 
     @GetMapping("/type/{type}")
-    public List<StockMovement> findStockMovementByType(@PathVariable MovementType type) {
+    public List<StockMovementResposeDTO> findStockMovementByType(@PathVariable MovementType type) {
         return this.stockMovementService.findStockMovementsByType(type);
     }
 
     @GetMapping(params = {"startDate", "endDate"})
-    public List<StockMovement> findStockMovementByDateBetween(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
+    public List<StockMovementResposeDTO> findStockMovementByDateBetween(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
         return this.stockMovementService.findStockMovementsByDateBetween(startDate, endDate);
     }
 
     @GetMapping("/product/{id}")
-    public List<StockMovement> findStockMovementsByProduct(@PathVariable Integer id) {
+    public List<StockMovementResposeDTO> findStockMovementsByProduct(@PathVariable Integer id) {
         return this.stockMovementService.findStockMovementsByProduct(id);
     }
 
     @GetMapping("/warehouse/{id}")
-    public List<StockMovement> findStockMovementsByWarehouse(@PathVariable Integer id) {
+    public List<StockMovementResposeDTO> findStockMovementsByWarehouse(@PathVariable Integer id) {
         return this.stockMovementService.findStockMovementsByWarehouse(id);
     }
 
@@ -53,13 +54,12 @@ public class StockMovementController {
     }
 
     @PostMapping
-    public StockMovement createStockMovement(@RequestBody StockMovement stockMovement) {
-        return this.stockMovementService.createStockMovement(stockMovement);
+    public StockMovementResposeDTO createStockMovement(@RequestBody StockMovementRequestDTO dto) {
+        return this.stockMovementService.createStockMovement(dto);
     }
 
     @PutMapping("/{id}")
-    public StockMovement updateStockMovement(@PathVariable Integer id, @RequestBody StockMovement stockMovement) {
-        stockMovement.setId(id);
-        return this.stockMovementService.updateStockMovement(stockMovement);
+    public StockMovementResposeDTO updateStockMovement(@PathVariable Integer id, @RequestBody StockMovementRequestDTO dto) {
+        return this.stockMovementService.updateStockMovement(id, dto);
     }
 }
