@@ -17,7 +17,11 @@ public class ProductResponseDTO {
 
     private Integer categoryId;
 
+    private String categoryName;
+
     private Integer supplierId;
+
+    private String supplierName;
 
     public Integer getId() {
         return this.id;
@@ -75,11 +79,27 @@ public class ProductResponseDTO {
         this.categoryId = categoryId;
     }
 
+    public String getCategoryName() {
+        return this.categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public Integer getSupplierId() {
         return this.supplierId;
     }
 
     public void setSupplierId(Integer supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 }
