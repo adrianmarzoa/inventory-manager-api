@@ -1,5 +1,7 @@
 package com.evolvedadrian.inventory.controller;
 
+import com.evolvedadrian.inventory.dto.request.ProductRequestDTO;
+import com.evolvedadrian.inventory.dto.response.ProductResponseDTO;
 import com.evolvedadrian.inventory.entity.Product;
 import com.evolvedadrian.inventory.service.ProductService;
 import org.springframework.web.bind.annotation.*;
@@ -18,37 +20,37 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductResponseDTO> getAllProducts() {
         return this.productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Integer id) {
+    public ProductResponseDTO getProductById(@PathVariable Integer id) {
         return this.productService.getProductById(id);
     }
 
     @GetMapping("/sku/{sku}")
-    public Optional<Product> findProductBySku(@PathVariable String sku) {
+    public Optional<ProductResponseDTO> findProductBySku(@PathVariable String sku) {
         return this.productService.findProductBySku(sku);
     }
 
     @GetMapping("/name/{name}")
-    public List<Product> findProductByName(@PathVariable String name) {
+    public List<ProductResponseDTO> findProductByName(@PathVariable String name) {
         return this.productService.findProductsByName(name);
     }
 
     @GetMapping("/category/{id}")
-    public List<Product> findProductByCategory(@PathVariable Integer id) {
+    public List<ProductResponseDTO> findProductByCategory(@PathVariable Integer id) {
         return this.productService.findProductsByCategory(id);
     }
 
     @GetMapping("/supplier/{id}")
-    public List<Product> findProductBySupplier(@PathVariable Integer id) {
+    public List<ProductResponseDTO> findProductBySupplier(@PathVariable Integer id) {
         return this.productService.findProductsBySupplier(id);
     }
 
     @GetMapping(params = {"minPrice", "maxPrice"})
-    public List<Product> findProductByPriceBetween(@RequestParam BigDecimal minPrice, @RequestParam BigDecimal maxPrice) {
+    public List<ProductResponseDTO> findProductByPriceBetween(@RequestParam BigDecimal minPrice, @RequestParam BigDecimal maxPrice) {
         return this.productService.findProductsByPriceBetween(minPrice, maxPrice);
     }
 
@@ -58,13 +60,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return this.productService.createProduct(product);
+    public ProductResponseDTO createProduct(@RequestBody ProductRequestDTO dto) {
+        return this.productService.createProduct(dto);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Integer id, @RequestBody Product product) {
-        product.setId(id);
-        return this.productService.updateProduct(product);
+    public ProductResponseDTO updateProduct(@PathVariable Integer id, @RequestBody ProductRequestDTO dto) {
+        return this.productService.updateProduct(id, dto);
     }
 }

@@ -89,7 +89,7 @@ public class Product {
     }
 
     public Category getCategory() {
-        return this.category;
+        return category;
     }
 
     public void setCategory(Category category) {
@@ -97,7 +97,7 @@ public class Product {
     }
 
     public Supplier getSupplier() {
-        return this.supplier;
+        return supplier;
     }
 
     public void setSupplier(Supplier supplier) {

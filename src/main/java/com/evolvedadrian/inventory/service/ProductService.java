@@ -1,66 +1,115 @@
 package com.evolvedadrian.inventory.service;
 
+import com.evolvedadrian.inventory.dto.request.ProductRequestDTO;
+import com.evolvedadrian.inventory.dto.response.ProductResponseDTO;
+import com.evolvedadrian.inventory.entity.Category;
 import com.evolvedadrian.inventory.entity.Product;
+import com.evolvedadrian.inventory.entity.Supplier;
+import com.evolvedadrian.inventory.mapper.ProductMapper;
+import com.evolvedadrian.inventory.repository.CategoryRepository;
 import com.evolvedadrian.inventory.repository.ProductRepository;
-import org.springframework.dao.DataIntegrityViolationException;
+import com.evolvedadrian.inventory.repository.SupplierRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
+    private final SupplierRepository supplierRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper, CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
+        this.categoryRepository = categoryRepository;
+        this.supplierRepository = supplierRepository;
     }
 
-    public List<Product> getAllProducts() {
-        return this.productRepository.findAll();
+    public List<ProductResponseDTO> getAllProducts() {
+        List<Product> products = this.productRepository.findAll();
+        List<ProductResponseDTO> dtos = new ArrayList<>();
+
+        for (Product product : products) {
+            dtos.add(this.productMapper.toResponse(product));
+        }
+
+        return dtos;
     }
 
-    public Product getProductById(Integer id) {
-        return this.productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found."));
+    public ProductResponseDTO getProductById(Integer id) {
+        Product product = this.productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found."));
+
+        return this.productMapper.toResponse(product);
     }
 
-    public Product createProduct(Product product) {
-        if(this.productRepository.existsBySku(product.getSku())){
+    public ProductResponseDTO createProduct(ProductRequestDTO dto) {
+        if (this.productRepository.existsBySku(dto.getSku())) {
             throw new RuntimeException("Sku already exists.");
         }
-        return this.productRepository.save(product);
+
+        Product product = this.productMapper.toEntity(dto);
+
+        Product saved = this.productRepository.save(product);
+
+        return this.productMapper.toResponse(saved);
     }
 
-    public Product updateProduct(Product product) {
-        if (!this.productRepository.existsById(product.getId())) {
+    public ProductResponseDTO updateProduct(Integer id, ProductRequestDTO dto) {
+        if (!this.productRepository.existsById(id)) {
             throw new RuntimeException("Product does not exist.");
         }
-        return this.productRepository.save(product);
+
+        Product product = this.productMapper.toEntity(dto);
+
+        Category category = this.categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found."));
+
+        Supplier supplier = this.supplierRepository.findById(dto.getSupplierId()).orElseThrow(() -> new RuntimeException("Supplier not found."));
+
+        product.setId(id);
+        product.setCategory(category);
+        product.setSupplier(supplier);
+
+        Product saved = this.productRepository.save(product);
+
+        return this.productMapper.toResponse(saved);
     }
 
     public void deleteProduct(Integer id) {
-        Product product = getProductById(id);
-        this.productRepository.delete(product);
+        this.productRepository.deleteById(id);
     }
 
-    public Optional<Product> findProductBySku(String sku) {
-        return this.productRepository.findBySku(sku);
+    public Optional<ProductResponseDTO> findProductBySku(String sku) {
+        Optional<Product> product = this.productRepository.findBySku(sku);
+
+        return product.map(this.productMapper::toResponse);
     }
 
-    public List<Product> findProductsByName(String name) {
-        return this.productRepository.findByName(name);
+    public List<ProductResponseDTO> findProductsByName(String name) {
+        List<Product> products = this.productRepository.findByName(name);
+
+        return products.stream().map(this.productMapper::toResponse).toList();
     }
 
-    public List<Product> findProductsByCategory(Integer categoryId) {
-        return this.productRepository.findByCategoryId(categoryId);
+    public List<ProductResponseDTO> findProductsByCategory(Integer categoryId) {
+        List<Product> products = this.productRepository.findByCategoryId(categoryId);
+
+        return products.stream().map(this.productMapper::toResponse).toList();
     }
 
-    public List<Product> findProductsBySupplier(Integer supplierId) {
-        return this.productRepository.findBySupplierId(supplierId);
+    public List<ProductResponseDTO> findProductsBySupplier(Integer supplierId) {
+        List<Product> products = this.productRepository.findBySupplierId(supplierId);
+
+        return products.stream().map(this.productMapper::toResponse).toList();
     }
 
-    public List<Product> findProductsByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice) {
-        return this.productRepository.findByPriceBetween(minPrice, maxPrice);
+    public List<ProductResponseDTO> findProductsByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice) {
+        List<Product> products = this.productRepository.findByPriceBetween(minPrice, maxPrice);
+
+        return products.stream().map(this.productMapper::toResponse).toList();
     }
 }
