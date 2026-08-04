@@ -1,7 +1,5 @@
 package com.evolvedadrian.inventory.dto.request;
 
-import jakarta.persistence.Column;
-
 public class SupplierRequestDTO {
     private String name;
 

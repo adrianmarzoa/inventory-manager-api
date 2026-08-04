@@ -2,7 +2,6 @@ package com.evolvedadrian.inventory.controller;
 
 import com.evolvedadrian.inventory.dto.request.SupplierRequestDTO;
 import com.evolvedadrian.inventory.dto.response.SupplierResponseDTO;
-import com.evolvedadrian.inventory.entity.Supplier;
 import com.evolvedadrian.inventory.service.SupplierService;
 import org.springframework.web.bind.annotation.*;
 

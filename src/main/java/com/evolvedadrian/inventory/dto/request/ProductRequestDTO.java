@@ -1,9 +1,5 @@
 package com.evolvedadrian.inventory.dto.request;
 
-import com.evolvedadrian.inventory.entity.Category;
-import com.evolvedadrian.inventory.entity.Supplier;
-import jakarta.validation.constraints.PositiveOrZero;
-
 import java.math.BigDecimal;
 
 public class ProductRequestDTO {

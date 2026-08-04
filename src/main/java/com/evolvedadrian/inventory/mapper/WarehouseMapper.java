@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WarehouseMapper {
-    public Warehouse toEntity(WarehouseRequestDTO dto){
+    public Warehouse toEntity(WarehouseRequestDTO dto) {
         Warehouse warehouse = new Warehouse();
 
         warehouse.setName(dto.getName());
@@ -16,7 +16,7 @@ public class WarehouseMapper {
         return warehouse;
     }
 
-    public WarehouseResponseDTO toResponse(Warehouse warehouse){
+    public WarehouseResponseDTO toResponse(Warehouse warehouse) {
         WarehouseResponseDTO dto = new WarehouseResponseDTO();
 
         dto.setId(warehouse.getId());

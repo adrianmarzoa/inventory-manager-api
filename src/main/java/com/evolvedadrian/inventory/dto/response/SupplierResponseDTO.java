@@ -1,7 +1,5 @@
 package com.evolvedadrian.inventory.dto.response;
 
-import jakarta.persistence.Column;
-
 public class SupplierResponseDTO {
     private Integer id;
 

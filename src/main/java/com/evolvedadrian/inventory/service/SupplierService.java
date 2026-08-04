@@ -29,7 +29,7 @@ public class SupplierService {
     }
 
     public SupplierResponseDTO createSupplier(SupplierRequestDTO dto) {
-        if(this.supplierRepository.existsByEmail(dto.getEmail())){
+        if (this.supplierRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("Email already exists.");
         }
 

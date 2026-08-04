@@ -2,7 +2,6 @@ package com.evolvedadrian.inventory.controller;
 
 import com.evolvedadrian.inventory.dto.request.CategoryRequestDTO;
 import com.evolvedadrian.inventory.dto.response.CategoryResponseDTO;
-import com.evolvedadrian.inventory.entity.Category;
 import com.evolvedadrian.inventory.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 

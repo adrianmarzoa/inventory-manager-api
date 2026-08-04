@@ -1,12 +1,6 @@
 package com.evolvedadrian.inventory.dto.request;
 
-import com.evolvedadrian.inventory.entity.Product;
-import com.evolvedadrian.inventory.entity.Warehouse;
 import com.evolvedadrian.inventory.enums.MovementType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 

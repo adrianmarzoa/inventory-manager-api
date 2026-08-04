@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StockMovementMapper {
-    public StockMovement toEntity(StockMovementRequestDTO dto){
+    public StockMovement toEntity(StockMovementRequestDTO dto) {
         StockMovement stockMovement = new StockMovement();
 
         stockMovement.setType(dto.getType());
@@ -17,7 +17,7 @@ public class StockMovementMapper {
         return stockMovement;
     }
 
-    public StockMovementResposeDTO toResponse(StockMovement stockMovement){
+    public StockMovementResposeDTO toResponse(StockMovement stockMovement) {
         StockMovementResposeDTO dto = new StockMovementResposeDTO();
 
         dto.setId(stockMovement.getId());
