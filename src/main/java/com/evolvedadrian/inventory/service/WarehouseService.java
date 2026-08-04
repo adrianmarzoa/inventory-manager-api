@@ -1,6 +1,9 @@
 package com.evolvedadrian.inventory.service;
 
+import com.evolvedadrian.inventory.dto.request.WarehouseRequestDTO;
+import com.evolvedadrian.inventory.dto.response.WarehouseResponseDTO;
 import com.evolvedadrian.inventory.entity.Warehouse;
+import com.evolvedadrian.inventory.mapper.WarehouseMapper;
 import com.evolvedadrian.inventory.repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,40 +12,59 @@ import java.util.List;
 @Service
 public class WarehouseService {
     private final WarehouseRepository warehouseRepository;
+    private final WarehouseMapper warehouseMapper;
 
-    public WarehouseService(WarehouseRepository warehouseRepository) {
+    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper) {
         this.warehouseRepository = warehouseRepository;
+        this.warehouseMapper = warehouseMapper;
     }
 
-    public List<Warehouse> getAllWarehouses() {
-        return this.warehouseRepository.findAll();
+    public List<WarehouseResponseDTO> getAllWarehouses() {
+        List<Warehouse> warehouses = this.warehouseRepository.findAll();
+
+        return warehouses.stream().map(this.warehouseMapper::toResponse).toList();
     }
 
-    public Warehouse getWarehouseById(Integer id) {
-        return this.warehouseRepository.findById(id).orElseThrow(() -> new RuntimeException("Warehouse not found."));
+    public WarehouseResponseDTO getWarehouseById(Integer id) {
+        Warehouse warehouse = this.warehouseRepository.findById(id).orElseThrow(() -> new RuntimeException("Warehouse not found."));
+        return this.warehouseMapper.toResponse(warehouse);
     }
 
-    public Warehouse createWarehouse(Warehouse warehouse) {
-        return this.warehouseRepository.save(warehouse);
+    public WarehouseResponseDTO createWarehouse(WarehouseRequestDTO dto) {
+        Warehouse warehouse = this.warehouseMapper.toEntity(dto);
+
+        Warehouse created = this.warehouseRepository.save(warehouse);
+
+        return this.warehouseMapper.toResponse(created);
     }
 
-    public Warehouse updateWarehouse(Warehouse warehouse) {
-        if (!this.warehouseRepository.existsById(warehouse.getId())) {
+    public WarehouseResponseDTO updateWarehouse(Integer id, WarehouseRequestDTO dto) {
+        if (!this.warehouseRepository.existsById(id)) {
             throw new RuntimeException("Warehouse does not exist.");
         }
-        return this.warehouseRepository.save(warehouse);
+
+        Warehouse warehouse = this.warehouseMapper.toEntity(dto);
+
+        warehouse.setId(id);
+
+        Warehouse updated = this.warehouseRepository.save(warehouse);
+
+        return this.warehouseMapper.toResponse(updated);
     }
 
     public void deleteWarehouse(Integer id) {
-        Warehouse warehouse = getWarehouseById(id);
-        this.warehouseRepository.delete(warehouse);
+        this.warehouseRepository.deleteById(id);
     }
 
-    public List<Warehouse> findWarehouseByName(String name) {
-        return this.warehouseRepository.findByName(name);
+    public List<WarehouseResponseDTO> findWarehouseByName(String name) {
+        List<Warehouse> warehouses = this.warehouseRepository.findByName(name);
+
+        return warehouses.stream().map(this.warehouseMapper::toResponse).toList();
     }
 
-    public List<Warehouse> findWarehouseByLocation(String location) {
-        return this.warehouseRepository.findByLocation(location);
+    public List<WarehouseResponseDTO> findWarehouseByLocation(String location) {
+        List<Warehouse> warehouses = this.warehouseRepository.findByLocation(location);
+
+        return warehouses.stream().map(this.warehouseMapper::toResponse).toList();
     }
 }

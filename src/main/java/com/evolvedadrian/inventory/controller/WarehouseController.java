@@ -1,5 +1,7 @@
 package com.evolvedadrian.inventory.controller;
 
+import com.evolvedadrian.inventory.dto.request.WarehouseRequestDTO;
+import com.evolvedadrian.inventory.dto.response.WarehouseResponseDTO;
 import com.evolvedadrian.inventory.entity.Warehouse;
 import com.evolvedadrian.inventory.service.WarehouseService;
 import org.springframework.web.bind.annotation.*;
@@ -14,28 +16,28 @@ public class WarehouseController {
     }
 
     @GetMapping
-    public List<Warehouse> getAllWarehouses() {
+    public List<WarehouseResponseDTO> getAllWarehouses() {
         return this.warehouseService.getAllWarehouses();
     }
 
     @GetMapping("/{id}")
-    public Warehouse getWarehouseById(@PathVariable Integer id) {
+    public WarehouseResponseDTO getWarehouseById(@PathVariable Integer id) {
         return this.warehouseService.getWarehouseById(id);
     }
 
     @GetMapping("/name/{name}")
-    public List<Warehouse> findWarehouseByName(@PathVariable String name) {
+    public List<WarehouseResponseDTO> findWarehouseByName(@PathVariable String name) {
         return this.warehouseService.findWarehouseByName(name);
     }
 
     @GetMapping("/location/{location}")
-    public List<Warehouse> findWarehouseByLocation(@PathVariable String location) {
+    public List<WarehouseResponseDTO> findWarehouseByLocation(@PathVariable String location) {
         return this.warehouseService.findWarehouseByLocation(location);
     }
 
     @PostMapping
-    public Warehouse createWarehouse(@RequestBody Warehouse warehouse) {
-        return this.warehouseService.createWarehouse(warehouse);
+    public WarehouseResponseDTO createWarehouse(@RequestBody WarehouseRequestDTO dto) {
+        return this.warehouseService.createWarehouse(dto);
     }
 
     @DeleteMapping("/{id}")
@@ -44,8 +46,7 @@ public class WarehouseController {
     }
 
     @PutMapping("/{id}")
-    public Warehouse updateWarehouse(@PathVariable Integer id, @RequestBody Warehouse warehouse) {
-        warehouse.setId(id);
-        return this.warehouseService.updateWarehouse(warehouse);
+    public WarehouseResponseDTO updateWarehouse(@PathVariable Integer id, @RequestBody WarehouseRequestDTO dto) {
+        return this.warehouseService.updateWarehouse(id, dto);
     }
 }
