@@ -1,5 +1,7 @@
 package com.evolvedadrian.inventory.controller;
 
+import com.evolvedadrian.inventory.dto.request.CategoryRequestDTO;
+import com.evolvedadrian.inventory.dto.response.CategoryResponseDTO;
 import com.evolvedadrian.inventory.entity.Category;
 import com.evolvedadrian.inventory.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +19,22 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryResponseDTO> getAllCategories() {
         return this.categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Integer id) {
+    public CategoryResponseDTO getCategoryById(@PathVariable Integer id) {
         return this.categoryService.getCategoryById(id);
     }
 
     @GetMapping("/name/{name}")
-    public Optional<Category> findCategoryByName(@PathVariable String name) {
+    public Optional<CategoryResponseDTO> findCategoryByName(@PathVariable String name) {
         return this.categoryService.findCategoryByName(name);
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
+    public CategoryResponseDTO createCategory(@RequestBody CategoryRequestDTO category) {
         return this.categoryService.createCategory(category);
     }
 
@@ -42,8 +44,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public Category updateCategory(@PathVariable Integer id, @RequestBody Category category) {
-        category.setId(id);
-        return this.categoryService.updateCategory(category);
+    public CategoryResponseDTO updateCategory(@PathVariable Integer id, @RequestBody CategoryRequestDTO category) {
+        return this.categoryService.updateCategory(id, category);
     }
 }
