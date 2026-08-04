@@ -22,12 +22,7 @@ public class CategoryService {
     }
 
     public List<CategoryResponseDTO> getAllCategories() {
-        List<Category> categories = this.categoryRepository.findAll();
-        List<CategoryResponseDTO> dtos = new ArrayList<>();
-        for (Category category : categories) {
-            dtos.add(this.categoryMapper.toResponse(category));
-        }
-        return dtos;
+        return this.categoryRepository.findAll().stream().map(this.categoryMapper::toResponse).toList();
     }
 
     public CategoryResponseDTO getCategoryById(Integer id) {
