@@ -6,6 +6,7 @@ import com.evolvedadrian.inventory.entity.Product;
 import com.evolvedadrian.inventory.entity.StockMovement;
 import com.evolvedadrian.inventory.entity.Warehouse;
 import com.evolvedadrian.inventory.enums.MovementType;
+import com.evolvedadrian.inventory.exception.ResourceNotFoundException;
 import com.evolvedadrian.inventory.mapper.StockMovementMapper;
 import com.evolvedadrian.inventory.repository.ProductRepository;
 import com.evolvedadrian.inventory.repository.StockMovementRepository;
@@ -34,7 +35,7 @@ public class StockMovementService {
     }
 
     public StockMovementResposeDTO getStockMovementById(Integer id) {
-        StockMovement stockMovement = this.stockMovementRepository.findById(id).orElseThrow(() -> new RuntimeException("Stock Movement not found."));
+        StockMovement stockMovement = this.stockMovementRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Stock Movement not found."));
 
         return this.stockMovementMapper.toResponse(stockMovement);
     }
@@ -49,14 +50,14 @@ public class StockMovementService {
 
     public StockMovementResposeDTO updateStockMovement(Integer id, StockMovementRequestDTO dto) {
         if (!this.stockMovementRepository.existsById(id)) {
-            throw new RuntimeException("Stock movement does not exist.");
+            throw new ResourceNotFoundException("Stock movement not found.");
         }
 
         StockMovement stockMovement = this.stockMovementMapper.toEntity(dto);
 
-        Product product = this.productRepository.findById(dto.getProductId()).orElseThrow(() -> new RuntimeException("Product not found."));
+        Product product = this.productRepository.findById(dto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found."));
 
-        Warehouse warehouse = this.warehouseRepository.findById(dto.getWarehouseId()).orElseThrow(() -> new RuntimeException("Warehouse not found."));
+        Warehouse warehouse = this.warehouseRepository.findById(dto.getWarehouseId()).orElseThrow(() -> new ResourceNotFoundException("Warehouse not found."));
 
         stockMovement.setId(id);
         stockMovement.setProduct(product);

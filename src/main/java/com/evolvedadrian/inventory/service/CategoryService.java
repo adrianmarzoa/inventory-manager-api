@@ -3,6 +3,8 @@ package com.evolvedadrian.inventory.service;
 import com.evolvedadrian.inventory.dto.request.CategoryRequestDTO;
 import com.evolvedadrian.inventory.dto.response.CategoryResponseDTO;
 import com.evolvedadrian.inventory.entity.Category;
+import com.evolvedadrian.inventory.exception.DuplicatedResourceException;
+import com.evolvedadrian.inventory.exception.ResourceNotFoundException;
 import com.evolvedadrian.inventory.mapper.CategoryMapper;
 import com.evolvedadrian.inventory.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -25,14 +27,14 @@ public class CategoryService {
     }
 
     public CategoryResponseDTO getCategoryById(Integer id) {
-        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found."));
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found."));
 
         return this.categoryMapper.toResponse(category);
     }
 
     public CategoryResponseDTO createCategory(CategoryRequestDTO dto) {
         if (this.categoryRepository.existsByName(dto.getName())) {
-            throw new RuntimeException("Name already exists.");
+            throw new DuplicatedResourceException("Name already exists.");
         }
 
         Category category = this.categoryMapper.toEntity(dto);
@@ -44,7 +46,7 @@ public class CategoryService {
 
     public CategoryResponseDTO updateCategory(Integer id, CategoryRequestDTO dto) {
         if (!this.categoryRepository.existsById(id)) {
-            throw new RuntimeException("Category does not exist.");
+            throw new ResourceNotFoundException("Category does not exist.");
         }
 
         Category category = this.categoryMapper.toEntity(dto);

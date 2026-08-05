@@ -3,6 +3,7 @@ package com.evolvedadrian.inventory.service;
 import com.evolvedadrian.inventory.dto.request.WarehouseRequestDTO;
 import com.evolvedadrian.inventory.dto.response.WarehouseResponseDTO;
 import com.evolvedadrian.inventory.entity.Warehouse;
+import com.evolvedadrian.inventory.exception.ResourceNotFoundException;
 import com.evolvedadrian.inventory.mapper.WarehouseMapper;
 import com.evolvedadrian.inventory.repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class WarehouseService {
     }
 
     public WarehouseResponseDTO getWarehouseById(Integer id) {
-        Warehouse warehouse = this.warehouseRepository.findById(id).orElseThrow(() -> new RuntimeException("Warehouse not found."));
+        Warehouse warehouse = this.warehouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Warehouse not found."));
         return this.warehouseMapper.toResponse(warehouse);
     }
 
@@ -40,7 +41,7 @@ public class WarehouseService {
 
     public WarehouseResponseDTO updateWarehouse(Integer id, WarehouseRequestDTO dto) {
         if (!this.warehouseRepository.existsById(id)) {
-            throw new RuntimeException("Warehouse does not exist.");
+            throw new ResourceNotFoundException("Warehouse not found.");
         }
 
         Warehouse warehouse = this.warehouseMapper.toEntity(dto);

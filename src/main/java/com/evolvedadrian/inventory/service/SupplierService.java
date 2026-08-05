@@ -3,6 +3,8 @@ package com.evolvedadrian.inventory.service;
 import com.evolvedadrian.inventory.dto.request.SupplierRequestDTO;
 import com.evolvedadrian.inventory.dto.response.SupplierResponseDTO;
 import com.evolvedadrian.inventory.entity.Supplier;
+import com.evolvedadrian.inventory.exception.DuplicatedResourceException;
+import com.evolvedadrian.inventory.exception.ResourceNotFoundException;
 import com.evolvedadrian.inventory.mapper.SupplierMapper;
 import com.evolvedadrian.inventory.repository.SupplierRepository;
 import org.springframework.stereotype.Service;
@@ -24,13 +26,13 @@ public class SupplierService {
     }
 
     public SupplierResponseDTO getSupplierById(Integer id) {
-        Supplier supplier = this.supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found."));
+        Supplier supplier = this.supplierRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Supplier not found."));
         return this.supplierMapper.toResponse(supplier);
     }
 
     public SupplierResponseDTO createSupplier(SupplierRequestDTO dto) {
         if (this.supplierRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("Email already exists.");
+            throw new DuplicatedResourceException("Email already exists.");
         }
 
         Supplier supplier = this.supplierMapper.toEntity(dto);
@@ -42,7 +44,7 @@ public class SupplierService {
 
     public SupplierResponseDTO updateSupplier(Integer id, SupplierRequestDTO dto) {
         if (!this.supplierRepository.existsById(id)) {
-            throw new RuntimeException("Supplier does not exist.");
+            throw new ResourceNotFoundException("Supplier not found.");
         }
 
         Supplier supplier = this.supplierMapper.toEntity(dto);

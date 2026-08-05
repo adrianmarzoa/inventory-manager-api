@@ -5,6 +5,8 @@ import com.evolvedadrian.inventory.dto.response.ProductResponseDTO;
 import com.evolvedadrian.inventory.entity.Category;
 import com.evolvedadrian.inventory.entity.Product;
 import com.evolvedadrian.inventory.entity.Supplier;
+import com.evolvedadrian.inventory.exception.DuplicatedResourceException;
+import com.evolvedadrian.inventory.exception.ResourceNotFoundException;
 import com.evolvedadrian.inventory.mapper.ProductMapper;
 import com.evolvedadrian.inventory.repository.CategoryRepository;
 import com.evolvedadrian.inventory.repository.ProductRepository;
@@ -42,14 +44,14 @@ public class ProductService {
     }
 
     public ProductResponseDTO getProductById(Integer id) {
-        Product product = this.productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found."));
+        Product product = this.productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found."));
 
         return this.productMapper.toResponse(product);
     }
 
     public ProductResponseDTO createProduct(ProductRequestDTO dto) {
         if (this.productRepository.existsBySku(dto.getSku())) {
-            throw new RuntimeException("Sku already exists.");
+            throw new DuplicatedResourceException("Sku already exists.");
         }
 
         Product product = this.productMapper.toEntity(dto);
@@ -61,14 +63,14 @@ public class ProductService {
 
     public ProductResponseDTO updateProduct(Integer id, ProductRequestDTO dto) {
         if (!this.productRepository.existsById(id)) {
-            throw new RuntimeException("Product does not exist.");
+            throw new ResourceNotFoundException("Product not found.");
         }
 
         Product product = this.productMapper.toEntity(dto);
 
-        Category category = this.categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found."));
+        Category category = this.categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category not found."));
 
-        Supplier supplier = this.supplierRepository.findById(dto.getSupplierId()).orElseThrow(() -> new RuntimeException("Supplier not found."));
+        Supplier supplier = this.supplierRepository.findById(dto.getSupplierId()).orElseThrow(() -> new ResourceNotFoundException("Supplier not found."));
 
         product.setId(id);
         product.setCategory(category);
