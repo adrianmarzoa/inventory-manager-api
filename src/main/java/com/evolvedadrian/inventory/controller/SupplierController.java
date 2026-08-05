@@ -3,6 +3,7 @@ package com.evolvedadrian.inventory.controller;
 import com.evolvedadrian.inventory.dto.request.SupplierRequestDTO;
 import com.evolvedadrian.inventory.dto.response.SupplierResponseDTO;
 import com.evolvedadrian.inventory.service.SupplierService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class SupplierController {
     }
 
     @PostMapping
-    public SupplierResponseDTO createSupplier(@RequestBody SupplierRequestDTO dto) {
+    public SupplierResponseDTO createSupplier(@Valid @RequestBody SupplierRequestDTO dto) {
         return this.supplierService.createSupplier(dto);
     }
 
@@ -40,7 +41,7 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public SupplierResponseDTO updateSupplier(@PathVariable Integer id, @RequestBody SupplierRequestDTO dto) {
+    public SupplierResponseDTO updateSupplier(@PathVariable Integer id, @Valid @RequestBody SupplierRequestDTO dto) {
         return this.supplierService.updateSupplier(id, dto);
     }
 }

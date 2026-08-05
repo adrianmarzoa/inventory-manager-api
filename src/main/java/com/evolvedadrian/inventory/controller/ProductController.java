@@ -3,6 +3,7 @@ package com.evolvedadrian.inventory.controller;
 import com.evolvedadrian.inventory.dto.request.ProductRequestDTO;
 import com.evolvedadrian.inventory.dto.response.ProductResponseDTO;
 import com.evolvedadrian.inventory.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -59,12 +60,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponseDTO createProduct(@RequestBody ProductRequestDTO dto) {
+    public ProductResponseDTO createProduct(@Valid @RequestBody ProductRequestDTO dto) {
         return this.productService.createProduct(dto);
     }
 
     @PutMapping("/{id}")
-    public ProductResponseDTO updateProduct(@PathVariable Integer id, @RequestBody ProductRequestDTO dto) {
+    public ProductResponseDTO updateProduct(@PathVariable Integer id, @Valid @RequestBody ProductRequestDTO dto) {
         return this.productService.updateProduct(id, dto);
     }
 }

@@ -3,6 +3,7 @@ package com.evolvedadrian.inventory.controller;
 import com.evolvedadrian.inventory.dto.request.WarehouseRequestDTO;
 import com.evolvedadrian.inventory.dto.response.WarehouseResponseDTO;
 import com.evolvedadrian.inventory.service.WarehouseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public WarehouseResponseDTO createWarehouse(@RequestBody WarehouseRequestDTO dto) {
+    public WarehouseResponseDTO createWarehouse(@Valid @RequestBody WarehouseRequestDTO dto) {
         return this.warehouseService.createWarehouse(dto);
     }
 
@@ -45,7 +46,7 @@ public class WarehouseController {
     }
 
     @PutMapping("/{id}")
-    public WarehouseResponseDTO updateWarehouse(@PathVariable Integer id, @RequestBody WarehouseRequestDTO dto) {
+    public WarehouseResponseDTO updateWarehouse(@PathVariable Integer id, @Valid @RequestBody WarehouseRequestDTO dto) {
         return this.warehouseService.updateWarehouse(id, dto);
     }
 }

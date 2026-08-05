@@ -3,6 +3,7 @@ package com.evolvedadrian.inventory.controller;
 import com.evolvedadrian.inventory.dto.request.CategoryRequestDTO;
 import com.evolvedadrian.inventory.dto.response.CategoryResponseDTO;
 import com.evolvedadrian.inventory.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryResponseDTO createCategory(@RequestBody CategoryRequestDTO category) {
+    public CategoryResponseDTO createCategory(@Valid @RequestBody CategoryRequestDTO category) {
         return this.categoryService.createCategory(category);
     }
 
@@ -43,7 +44,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public CategoryResponseDTO updateCategory(@PathVariable Integer id, @RequestBody CategoryRequestDTO category) {
+    public CategoryResponseDTO updateCategory(@PathVariable Integer id, @Valid @RequestBody CategoryRequestDTO category) {
         return this.categoryService.updateCategory(id, category);
     }
 }

@@ -4,6 +4,7 @@ import com.evolvedadrian.inventory.dto.request.StockMovementRequestDTO;
 import com.evolvedadrian.inventory.dto.response.StockMovementResposeDTO;
 import com.evolvedadrian.inventory.enums.MovementType;
 import com.evolvedadrian.inventory.service.StockMovementService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -54,12 +55,12 @@ public class StockMovementController {
     }
 
     @PostMapping
-    public StockMovementResposeDTO createStockMovement(@RequestBody StockMovementRequestDTO dto) {
+    public StockMovementResposeDTO createStockMovement(@Valid @RequestBody StockMovementRequestDTO dto) {
         return this.stockMovementService.createStockMovement(dto);
     }
 
     @PutMapping("/{id}")
-    public StockMovementResposeDTO updateStockMovement(@PathVariable Integer id, @RequestBody StockMovementRequestDTO dto) {
+    public StockMovementResposeDTO updateStockMovement(@PathVariable Integer id, @Valid @RequestBody StockMovementRequestDTO dto) {
         return this.stockMovementService.updateStockMovement(id, dto);
     }
 }

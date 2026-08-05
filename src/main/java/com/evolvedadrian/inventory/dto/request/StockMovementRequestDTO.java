@@ -1,18 +1,27 @@
 package com.evolvedadrian.inventory.dto.request;
 
 import com.evolvedadrian.inventory.enums.MovementType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
 public class StockMovementRequestDTO {
+    @NotBlank(message = "Type is required")
     private MovementType type;
 
+    @NotNull(message = "Quantity is required")
+    @Positive(message = "Quantity must be positive")
     private Integer quantity;
 
+    @NotNull(message = "Date is required")
     private LocalDateTime date;
 
+    @NotNull(message = "Product is required")
     private Integer productId;
 
+    @NotNull(message = "Warehouse is required")
     private Integer warehouseId;
 
     public MovementType getType() {
