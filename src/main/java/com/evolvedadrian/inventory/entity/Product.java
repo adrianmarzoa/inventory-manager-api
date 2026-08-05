@@ -1,7 +1,6 @@
 package com.evolvedadrian.inventory.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
@@ -21,11 +20,9 @@ public class Product {
     @Column
     private String description;
 
-    @PositiveOrZero
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price = BigDecimal.ZERO;
 
-    @PositiveOrZero
     @Column(nullable = false)
     private Integer stock = 0;
 

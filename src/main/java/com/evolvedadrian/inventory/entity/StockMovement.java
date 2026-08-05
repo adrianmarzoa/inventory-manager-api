@@ -2,7 +2,6 @@ package com.evolvedadrian.inventory.entity;
 
 import com.evolvedadrian.inventory.enums.MovementType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +16,6 @@ public class StockMovement {
     @Column(nullable = false)
     private MovementType type;
 
-    @Positive
     @Column(nullable = false)
     private Integer quantity;
 

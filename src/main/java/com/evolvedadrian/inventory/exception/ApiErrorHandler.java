@@ -27,7 +27,7 @@ public class ApiErrorHandler {
     }
 
     @ExceptionHandler(DuplicatedResourceException.class)
-    public ResponseEntity<ApiError> handleDuplicated(DuplicatedResourceException ex, HttpServletRequest request){
+    public ResponseEntity<ApiError> handleDuplicated(DuplicatedResourceException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
 
         ApiError apiError = new ApiError(
@@ -41,7 +41,7 @@ public class ApiErrorHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,String>> handleValidation(MethodArgumentNotValidException ex){
+    public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> apiError = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors().forEach(fieldError -> apiError.put(fieldError.getField(), fieldError.getDefaultMessage()));
@@ -50,7 +50,7 @@ public class ApiErrorHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest request){
+    public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         ApiError apiError = new ApiError(
