@@ -16,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +33,7 @@ public class ProductService {
     }
 
     public Page<ProductResponseDTO> getAllProducts(Pageable pageable) {
-         return this.productRepository.findAll(pageable).map(this.productMapper::toResponse);
+        return this.productRepository.findAll(pageable).map(this.productMapper::toResponse);
     }
 
     public ProductResponseDTO getProductById(Integer id) {
