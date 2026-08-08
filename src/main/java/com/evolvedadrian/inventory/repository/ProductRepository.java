@@ -1,6 +1,8 @@
 package com.evolvedadrian.inventory.repository;
 
 import com.evolvedadrian.inventory.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
@@ -12,11 +14,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     boolean existsBySku(String sku);
 
-    List<Product> findByName(String name);
+    Page<Product> findByName(String name, Pageable pageable);
 
-    List<Product> findByCategoryId(Integer categoryId);
+    Page<Product> findByCategoryId(Integer categoryId, Pageable pageable);
 
-    List<Product> findBySupplierId(Integer supplierId);
+    Page<Product> findBySupplierId(Integer supplierId, Pageable pageable);
 
-    List<Product> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
+    Page<Product> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 }

@@ -11,6 +11,8 @@ import com.evolvedadrian.inventory.mapper.ProductMapper;
 import com.evolvedadrian.inventory.repository.CategoryRepository;
 import com.evolvedadrian.inventory.repository.ProductRepository;
 import com.evolvedadrian.inventory.repository.SupplierRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -32,8 +34,8 @@ public class ProductService {
         this.supplierRepository = supplierRepository;
     }
 
-    public List<ProductResponseDTO> getAllProducts() {
-         return this.productRepository.findAll().stream().map(this.productMapper::toResponse).toList();
+    public Page<ProductResponseDTO> getAllProducts(Pageable pageable) {
+         return this.productRepository.findAll(pageable).map(this.productMapper::toResponse);
     }
 
     public ProductResponseDTO getProductById(Integer id) {
@@ -84,27 +86,27 @@ public class ProductService {
         return product.map(this.productMapper::toResponse);
     }
 
-    public List<ProductResponseDTO> findProductsByName(String name) {
-        List<Product> products = this.productRepository.findByName(name);
+    public Page<ProductResponseDTO> findProductsByName(String name, Pageable pageable) {
+        Page<Product> products = this.productRepository.findByName(name, pageable);
 
-        return products.stream().map(this.productMapper::toResponse).toList();
+        return products.map(this.productMapper::toResponse);
     }
 
-    public List<ProductResponseDTO> findProductsByCategory(Integer categoryId) {
-        List<Product> products = this.productRepository.findByCategoryId(categoryId);
+    public Page<ProductResponseDTO> findProductsByCategory(Integer categoryId, Pageable pageable) {
+        Page<Product> products = this.productRepository.findByCategoryId(categoryId, pageable);
 
-        return products.stream().map(this.productMapper::toResponse).toList();
+        return products.map(this.productMapper::toResponse);
     }
 
-    public List<ProductResponseDTO> findProductsBySupplier(Integer supplierId) {
-        List<Product> products = this.productRepository.findBySupplierId(supplierId);
+    public Page<ProductResponseDTO> findProductsBySupplier(Integer supplierId, Pageable pageable) {
+        Page<Product> products = this.productRepository.findBySupplierId(supplierId, pageable);
 
-        return products.stream().map(this.productMapper::toResponse).toList();
+        return products.map(this.productMapper::toResponse);
     }
 
-    public List<ProductResponseDTO> findProductsByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice) {
-        List<Product> products = this.productRepository.findByPriceBetween(minPrice, maxPrice);
+    public Page<ProductResponseDTO> findProductsByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        Page<Product> products = this.productRepository.findByPriceBetween(minPrice, maxPrice, pageable);
 
-        return products.stream().map(this.productMapper::toResponse).toList();
+        return products.map(this.productMapper::toResponse);
     }
 }
