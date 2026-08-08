@@ -2,17 +2,19 @@ package com.evolvedadrian.inventory.repository;
 
 import com.evolvedadrian.inventory.entity.StockMovement;
 import com.evolvedadrian.inventory.enums.MovementType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StockMovementRepository extends JpaRepository<StockMovement, Integer> {
-    List<StockMovement> findByType(MovementType type);
+    Page<StockMovement> findByType(MovementType type, Pageable pageable);
 
-    List<StockMovement> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    Page<StockMovement> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
-    List<StockMovement> findByProductId(Integer productId);
+    Page<StockMovement> findByProductId(Integer productId, Pageable pageable);
 
-    List<StockMovement> findByWarehouseId(Integer warehouseId);
+    Page<StockMovement> findByWarehouseId(Integer warehouseId, Pageable pageable);
 }

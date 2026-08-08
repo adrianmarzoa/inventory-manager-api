@@ -11,6 +11,8 @@ import com.evolvedadrian.inventory.mapper.StockMovementMapper;
 import com.evolvedadrian.inventory.repository.ProductRepository;
 import com.evolvedadrian.inventory.repository.StockMovementRepository;
 import com.evolvedadrian.inventory.repository.WarehouseRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,8 +32,8 @@ public class StockMovementService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    public List<StockMovementResposeDTO> getAllStockMovements() {
-        return this.stockMovementRepository.findAll().stream().map(this.stockMovementMapper::toResponse).toList();
+    public Page<StockMovementResposeDTO> getAllStockMovements(Pageable pageable) {
+        return this.stockMovementRepository.findAll(pageable).map(this.stockMovementMapper::toResponse);
     }
 
     public StockMovementResposeDTO getStockMovementById(Integer id) {
@@ -72,27 +74,27 @@ public class StockMovementService {
         this.stockMovementRepository.deleteById(id);
     }
 
-    public List<StockMovementResposeDTO> findStockMovementsByType(MovementType type) {
-        List<StockMovement> stockMovements = this.stockMovementRepository.findByType(type);
+    public Page<StockMovementResposeDTO> findStockMovementsByType(MovementType type, Pageable pageable) {
+        Page<StockMovement> stockMovements = this.stockMovementRepository.findByType(type, pageable);
 
-        return stockMovements.stream().map(this.stockMovementMapper::toResponse).toList();
+        return stockMovements.map(this.stockMovementMapper::toResponse);
     }
 
-    public List<StockMovementResposeDTO> findStockMovementsByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        List<StockMovement> stockMovements = this.stockMovementRepository.findByDateBetween(startDate, endDate);
+    public Page<StockMovementResposeDTO> findStockMovementsByDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        Page<StockMovement> stockMovements = this.stockMovementRepository.findByDateBetween(startDate, endDate, pageable);
 
-        return stockMovements.stream().map(this.stockMovementMapper::toResponse).toList();
+        return stockMovements.map(this.stockMovementMapper::toResponse);
     }
 
-    public List<StockMovementResposeDTO> findStockMovementsByProduct(Integer productId) {
-        List<StockMovement> stockMovements = this.stockMovementRepository.findByProductId(productId);
+    public Page<StockMovementResposeDTO> findStockMovementsByProduct(Integer productId, Pageable pageable) {
+        Page<StockMovement> stockMovements = this.stockMovementRepository.findByProductId(productId, pageable);
 
-        return stockMovements.stream().map(this.stockMovementMapper::toResponse).toList();
+        return stockMovements.map(this.stockMovementMapper::toResponse);
     }
 
-    public List<StockMovementResposeDTO> findStockMovementsByWarehouse(Integer warehouseId) {
-        List<StockMovement> stockMovements = this.stockMovementRepository.findByWarehouseId(warehouseId);
+    public Page<StockMovementResposeDTO> findStockMovementsByWarehouse(Integer warehouseId, Pageable pageable) {
+        Page<StockMovement> stockMovements = this.stockMovementRepository.findByWarehouseId(warehouseId, pageable);
 
-        return stockMovements.stream().map(this.stockMovementMapper::toResponse).toList();
+        return stockMovements.map(this.stockMovementMapper::toResponse);
     }
 }

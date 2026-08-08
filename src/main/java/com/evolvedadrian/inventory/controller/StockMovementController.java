@@ -5,10 +5,11 @@ import com.evolvedadrian.inventory.dto.response.StockMovementResposeDTO;
 import com.evolvedadrian.inventory.enums.MovementType;
 import com.evolvedadrian.inventory.service.StockMovementService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/stock-movements")
@@ -20,8 +21,8 @@ public class StockMovementController {
     }
 
     @GetMapping
-    public List<StockMovementResposeDTO> getAllStockMovements() {
-        return this.stockMovementService.getAllStockMovements();
+    public Page<StockMovementResposeDTO> getAllStockMovements(Pageable pageable) {
+        return this.stockMovementService.getAllStockMovements(pageable);
     }
 
     @GetMapping("/{id}")
@@ -30,23 +31,23 @@ public class StockMovementController {
     }
 
     @GetMapping("/type/{type}")
-    public List<StockMovementResposeDTO> findStockMovementByType(@PathVariable MovementType type) {
-        return this.stockMovementService.findStockMovementsByType(type);
+    public Page<StockMovementResposeDTO> findStockMovementByType(@PathVariable MovementType type, Pageable pageable) {
+        return this.stockMovementService.findStockMovementsByType(type, pageable);
     }
 
     @GetMapping(params = {"startDate", "endDate"})
-    public List<StockMovementResposeDTO> findStockMovementByDateBetween(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-        return this.stockMovementService.findStockMovementsByDateBetween(startDate, endDate);
+    public Page<StockMovementResposeDTO> findStockMovementByDateBetween(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate, Pageable pageable) {
+        return this.stockMovementService.findStockMovementsByDateBetween(startDate, endDate, pageable);
     }
 
     @GetMapping("/product/{id}")
-    public List<StockMovementResposeDTO> findStockMovementsByProduct(@PathVariable Integer id) {
-        return this.stockMovementService.findStockMovementsByProduct(id);
+    public Page<StockMovementResposeDTO> findStockMovementsByProduct(@PathVariable Integer id, Pageable pageable) {
+        return this.stockMovementService.findStockMovementsByProduct(id, pageable);
     }
 
     @GetMapping("/warehouse/{id}")
-    public List<StockMovementResposeDTO> findStockMovementsByWarehouse(@PathVariable Integer id) {
-        return this.stockMovementService.findStockMovementsByWarehouse(id);
+    public Page<StockMovementResposeDTO> findStockMovementsByWarehouse(@PathVariable Integer id, Pageable pageable) {
+        return this.stockMovementService.findStockMovementsByWarehouse(id, pageable);
     }
 
     @DeleteMapping("/{id}")
