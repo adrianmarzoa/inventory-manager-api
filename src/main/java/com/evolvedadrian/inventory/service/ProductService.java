@@ -33,14 +33,7 @@ public class ProductService {
     }
 
     public List<ProductResponseDTO> getAllProducts() {
-        List<Product> products = this.productRepository.findAll();
-        List<ProductResponseDTO> dtos = new ArrayList<>();
-
-        for (Product product : products) {
-            dtos.add(this.productMapper.toResponse(product));
-        }
-
-        return dtos;
+         return this.productRepository.findAll().stream().map(this.productMapper::toResponse).toList();
     }
 
     public ProductResponseDTO getProductById(Integer id) {
@@ -56,9 +49,9 @@ public class ProductService {
 
         Product product = this.productMapper.toEntity(dto);
 
-        Product saved = this.productRepository.save(product);
+        Product created = this.productRepository.save(product);
 
-        return this.productMapper.toResponse(saved);
+        return this.productMapper.toResponse(created);
     }
 
     public ProductResponseDTO updateProduct(Integer id, ProductRequestDTO dto) {
@@ -76,9 +69,9 @@ public class ProductService {
         product.setCategory(category);
         product.setSupplier(supplier);
 
-        Product saved = this.productRepository.save(product);
+        Product updated = this.productRepository.save(product);
 
-        return this.productMapper.toResponse(saved);
+        return this.productMapper.toResponse(updated);
     }
 
     public void deleteProduct(Integer id) {

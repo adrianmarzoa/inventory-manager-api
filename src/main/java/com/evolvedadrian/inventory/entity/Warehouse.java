@@ -3,7 +3,7 @@ package com.evolvedadrian.inventory.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "warehouse")
+@Table(name = "warehouses")
 public class Warehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

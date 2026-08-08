@@ -39,9 +39,9 @@ public class CategoryService {
 
         Category category = this.categoryMapper.toEntity(dto);
 
-        Category saved = this.categoryRepository.save(category);
+        Category created = this.categoryRepository.save(category);
 
-        return this.categoryMapper.toResponse(saved);
+        return this.categoryMapper.toResponse(created);
     }
 
     public CategoryResponseDTO updateCategory(Integer id, CategoryRequestDTO dto) {
@@ -53,9 +53,9 @@ public class CategoryService {
 
         category.setId(id);
 
-        Category saved = this.categoryRepository.save(category);
+        Category updated = this.categoryRepository.save(category);
 
-        return this.categoryMapper.toResponse(saved);
+        return this.categoryMapper.toResponse(updated);
     }
 
     public void deleteCategory(Integer id) {
