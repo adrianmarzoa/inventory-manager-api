@@ -46,7 +46,9 @@ public class WarehouseController {
     }
 
     @PutMapping("/{id}")
-    public WarehouseResponseDTO updateWarehouse(@PathVariable Integer id, @Valid @RequestBody WarehouseRequestDTO dto) {
+    public WarehouseResponseDTO updateWarehouse(
+            @PathVariable Integer id,
+            @Valid @RequestBody WarehouseRequestDTO dto) {
         return this.warehouseService.updateWarehouse(id, dto);
     }
 }

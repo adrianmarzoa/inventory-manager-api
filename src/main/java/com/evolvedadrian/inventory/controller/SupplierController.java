@@ -41,7 +41,9 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public SupplierResponseDTO updateSupplier(@PathVariable Integer id, @Valid @RequestBody SupplierRequestDTO dto) {
+    public SupplierResponseDTO updateSupplier(
+            @PathVariable Integer id,
+            @Valid @RequestBody SupplierRequestDTO dto) {
         return this.supplierService.updateSupplier(id, dto);
     }
 }

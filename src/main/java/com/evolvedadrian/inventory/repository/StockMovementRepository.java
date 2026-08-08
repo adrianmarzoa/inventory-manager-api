@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface StockMovementRepository extends JpaRepository<StockMovement, Integer> {
     Page<StockMovement> findByType(MovementType type, Pageable pageable);

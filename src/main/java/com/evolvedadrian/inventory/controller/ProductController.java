@@ -6,10 +6,11 @@ import com.evolvedadrian.inventory.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,22 +38,31 @@ public class ProductController {
     }
 
     @GetMapping("/name/{name}")
-    public Page<ProductResponseDTO> findProductByName(@PathVariable String name, Pageable pageable) {
+    public Page<ProductResponseDTO> findProductByName(
+            @PathVariable String name,
+            @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return this.productService.findProductsByName(name, pageable);
     }
 
     @GetMapping("/category/{id}")
-    public Page<ProductResponseDTO> findProductByCategory(@PathVariable Integer id, Pageable pageable) {
+    public Page<ProductResponseDTO> findProductByCategory(
+            @PathVariable Integer id,
+            @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return this.productService.findProductsByCategory(id, pageable);
     }
 
     @GetMapping("/supplier/{id}")
-    public Page<ProductResponseDTO> findProductBySupplier(@PathVariable Integer id, Pageable pageable) {
+    public Page<ProductResponseDTO> findProductBySupplier(
+            @PathVariable Integer id,
+            @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return this.productService.findProductsBySupplier(id, pageable);
     }
 
     @GetMapping(params = {"minPrice", "maxPrice"})
-    public Page<ProductResponseDTO> findProductByPriceBetween(@RequestParam BigDecimal minPrice, @RequestParam BigDecimal maxPrice, Pageable pageable) {
+    public Page<ProductResponseDTO> findProductByPriceBetween(
+            @RequestParam BigDecimal minPrice,
+            @RequestParam BigDecimal maxPrice,
+            @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return this.productService.findProductsByPriceBetween(minPrice, maxPrice, pageable);
     }
 
@@ -67,7 +77,9 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ProductResponseDTO updateProduct(@PathVariable Integer id, @Valid @RequestBody ProductRequestDTO dto) {
+    public ProductResponseDTO updateProduct(
+            @PathVariable Integer id,
+            @Valid @RequestBody ProductRequestDTO dto) {
         return this.productService.updateProduct(id, dto);
     }
 }
